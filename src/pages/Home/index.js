@@ -3,6 +3,9 @@ import {View,Text} from 'react-native'
 import {LinearGradient} from 'expo-linear-gradient'
 import StatusBarPage from '../../components/StatusBarPage'
 import Menu from '../../components/Menu'
+import {Feather} from '@expo/vector-icons'
+import {ContainerLogo,Logo,Title,SubTitle,ContainerContent,
+    ContainerInput,BoxIcon,Input,ButtonLink,ButtonLinkText} from './styles'
 export default function Home(){
     return(
 
@@ -17,8 +20,29 @@ export default function Home(){
     />
 
     <Menu/>
-       
-            <Text>Pagina Home</Text>
+       <ContainerLogo>
+           <Logo source={require('../../assets/Logo.png')} resizeMode="contain"/>
+       </ContainerLogo>
+        
+        <ContainerContent>
+            <Title>SujeitoLink</Title>
+            <SubTitle>Cole seu link para encurtar</SubTitle>
+
+            <ContainerInput>
+                <BoxIcon>
+                    <Feather name="link" size={22} color="#FFF"/>
+                </BoxIcon>
+                <Input
+                    placeholder="Cole seu link"
+                    placeholderTextColor="white"
+                />
+            </ContainerInput>
+
+            <ButtonLink>
+                <ButtonLinkText>Gerar Link</ButtonLinkText>
+            </ButtonLink>
+
+        </ContainerContent>
         
     </LinearGradient>
     )

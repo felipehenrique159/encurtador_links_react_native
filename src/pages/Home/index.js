@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
-import { TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
+import { TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, Modal } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import StatusBarPage from '../../components/StatusBarPage'
 import Menu from '../../components/Menu'
+import ModalLink from '../../components/ModalLink'
 import { Feather } from '@expo/vector-icons'
 import {
     ContainerLogo, Logo, Title, SubTitle, ContainerContent,
     ContainerInput, BoxIcon, Input, ButtonLink, ButtonLinkText
 } from './styles'
+
+
 export default function Home() {
 
     const [input,setInput] = useState('')
+    const [modalVisible,setModalViseble] = useState(false)
 
     function handleShortLink() {
-        alert('url digitada: ' + input)
+        // alert('url digitada: ' + input)
+        setModalViseble(!modalVisible)
     }
 
     return (
@@ -66,6 +71,15 @@ export default function Home() {
 
                     </ContainerContent>
                 </KeyboardAvoidingView>
+
+            <Modal 
+                visible={modalVisible}
+                transparent 
+                animationType="slide"
+            > 
+                <ModalLink onClose={() => setModalViseble(false)}/>
+            </Modal>
+
             </LinearGradient>
         </TouchableWithoutFeedback>
 

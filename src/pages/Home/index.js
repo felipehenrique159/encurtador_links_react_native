@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, Modal } from 'react-native'
+import { TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, Modal, ActivityIndicator } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import StatusBarPage from '../../components/StatusBarPage'
 import Menu from '../../components/Menu'
@@ -9,16 +9,39 @@ import {
     ContainerLogo, Logo, Title, SubTitle, ContainerContent,
     ContainerInput, BoxIcon, Input, ButtonLink, ButtonLinkText
 } from './styles'
+import api from '../../services/api'
 
 
 export default function Home() {
 
-    const [input,setInput] = useState('')
-    const [modalVisible,setModalViseble] = useState(false)
+    const [input, setInput] = useState('')
+    const [data, setData] = useState({})
+    const [loading, setLoading] = useState(false)
+    const [urlEncurtada, setUrlEncurtada] = useState('')
+    const [modalVisible, setModalVisible] = useState(false)
 
-    function handleShortLink() {
-        // alert('url digitada: ' + input)
-        setModalViseble(!modalVisible)
+    async function handleShortLink() {
+        if (input != '') {
+
+            setLoading(true)
+
+            try {
+                const response = await api.post('/shorten', {
+                    long_url: input
+                })
+                setData(response.data)
+                Keyboard.dismiss()
+                setModalVisible(!modalVisible)
+                setUrlEncurtada(response.data.link)
+                setLoading(false)
+                setInput('')
+            } catch (error) {
+                alert('Erro ao gerar link')
+                Keyboard.dismiss()
+                setLoading(false)
+            }
+        }
+        
     }
 
     return (
@@ -66,19 +89,27 @@ export default function Home() {
                         </ContainerInput>
 
                         <ButtonLink onPress={handleShortLink}>
-                            <ButtonLinkText>Gerar Link</ButtonLinkText>
+                            {
+                                loading ? (
+                                    <ActivityIndicator color="#121212" size={24} />
+                                ) :
+                                    (
+                                        <ButtonLinkText>Gerar Link</ButtonLinkText>
+                                    )
+                            }
+
                         </ButtonLink>
 
                     </ContainerContent>
                 </KeyboardAvoidingView>
 
-            <Modal 
-                visible={modalVisible}
-                transparent 
-                animationType="slide"
-            > 
-                <ModalLink onClose={() => setModalViseble(false)}/>
-            </Modal>
+                <Modal
+                    visible={modalVisible}
+                    transparent
+                    animationType="slide"
+                >
+                    <ModalLink onClose={() => setModalVisible(false)} data={data} />
+                </Modal>
 
             </LinearGradient>
         </TouchableWithoutFeedback>

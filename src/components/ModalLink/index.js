@@ -3,34 +3,33 @@ import {
     ModalContainer, Container, Header, LinkArea, Title, LongUrl, ShortLinkArea
     , ShortLinkUrl
 } from './styles'
-import {  TouchableOpacity, View,TouchableWithoutFeedback , Share} from 'react-native'
+import { TouchableOpacity, View, TouchableWithoutFeedback, Share } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import Clipboard from 'expo-clipboard'
 
 
-export default function ModalLink({onClose}) {
-
+export default function ModalLink({ onClose, data }) {
 
     function copyLink() {
-        Clipboard.setString('https://teste.com')
+        Clipboard.setString(data.link)
         alert('link copiado com sucesso')
     }
 
-   async function handleShare() {
+    async function handleShare() {
         try {
             const result = await Share.share({
-                message: `Link: Https://teste.com`
+                message: `Link: ${data.link}`
             })
 
-            if(result.action == Share.sharedAction){
-                if(result.activityType){
+            if (result.action == Share.sharedAction) {
+                if (result.activityType) {
                     console.log('ActivityType');
                 }
-                else{ //compartilhou
-                    console.log('compartilhado com sucesso');
+                else { //compartilhou
+                    console.log('Compartilhado com sucesso');
                 }
             }
-            else if(result.action === Share.dismissedAction){
+            else if (result.action === Share.dismissedAction) {
                 console.log('Modal fechado');
             }
 
@@ -42,7 +41,7 @@ export default function ModalLink({onClose}) {
     return (
         <ModalContainer>
             <TouchableWithoutFeedback onPress={onClose}>
-                <View style={{flex:1}}></View>
+                <View style={{ flex: 1 }}></View>
             </TouchableWithoutFeedback>
 
             <Container>
@@ -68,18 +67,18 @@ export default function ModalLink({onClose}) {
 
                 <LinkArea>
                     <Title>Link Encurtado</Title>
-                    <LongUrl numberOfLines={1}>https://kajsdlkadslkh</LongUrl>
+                    <LongUrl numberOfLines={1}>{data.long_url}</LongUrl>
 
                     <ShortLinkArea
                         activeOpacity={1}
                         onPress={copyLink}
                     >
-                        <ShortLinkUrl numberOfLines={1}>https://bit.ly.com</ShortLinkUrl>
+                        <ShortLinkUrl numberOfLines={1}>{data.link}</ShortLinkUrl>
                         <TouchableOpacity onPress={copyLink}>
                             <Feather
                                 name="copy"
                                 color="#FFF"
-                                size={25}                      
+                                size={25}
                             />
                         </TouchableOpacity>
                     </ShortLinkArea>

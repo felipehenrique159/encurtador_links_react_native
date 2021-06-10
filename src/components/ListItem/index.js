@@ -1,13 +1,13 @@
 import React from 'react'
 import {View,Text} from 'react-native'
-import {} from './styles'
+import {Container} from './styles'
 
 
 
 export default function ListItem(){
     return(
-        <View>
+        <Container>
             <Text>TESTE</Text>
-        </View>       
+        </Container>       
     )
 }

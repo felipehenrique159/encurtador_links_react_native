@@ -10,6 +10,7 @@ import {
     ContainerInput, BoxIcon, Input, ButtonLink, ButtonLinkText
 } from './styles'
 import api from '../../services/api'
+import {saveLink} from '../.././utils/storeLinks'
 
 
 export default function Home() {
@@ -35,6 +36,9 @@ export default function Home() {
                 setUrlEncurtada(response.data.link)
                 setLoading(false)
                 setInput('')
+
+                await saveLink('linksSalvos',response.data)
+
             } catch (error) {
                 alert('Erro ao gerar link')
                 Keyboard.dismiss()
